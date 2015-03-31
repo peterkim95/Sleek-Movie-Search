@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="movieApp" class="no-js" >
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<title>A Good Looking Movie Search Engine</title>
+		<meta name="description" content="A search input that morphs into a fullscreen search page." />
+		<meta name="keywords" content="search, input, effect, morph, transition, inspiration" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link href='http://fonts.googleapis.com/css?family=Raleway:100,700,800' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="odometer-theme-default.css" />
+        <link rel="stylesheet" href="index.css">
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<!--[if IE]>
+  		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+    
+	<body>
+		<div class="container">
+			<aside class="sidebar clearfix">
+				<nav>
+					<a href="#"><i class="fa fa-fw fa-comments-o"></i></a>
+					<a href="#"><i class="fa fa-fw fa-heart-o"></i></a>
+					<a href="#"><i class="fa fa-fw fa-send-o"></i></a>
+					<a href="#"><i class="fa fa-fw fa-smile-o"></i></a>
+				</nav>
+			</aside>
+			<div id="morphsearch" class="morphsearch">
+                <div id="main-container" ng-controller="SearchController as searchCtrl">
+                <div id="form-container">
+				<form class="morphsearch-form" name="searchForm" ng-submit="searchCtrl.search()" novalidate>
+					<input class="morphsearch-input" type="search" name="query" id="query-input" ng-model="searchCtrl.query" placeholder="Search..." autocomplete="off">
+					<button class="morphsearch-submit" type="submit">Search</button>
+				</form>
+                </div>
+				<div class="morphsearch-content">
+                        
+                        <div id="result-container"> <!--ng-show="searchCtrl.result"-->
+                            <h1 ng-hide="searchCtrl.resultFound">No Result Found. :(</h1>
+                            <div ng-show="searchCtrl.resultFound">
+
+                                <h1 id="title">{{searchCtrl.title}}</h1>
+                                <h2 id="year">{{searchCtrl.year}}</h2>
+
+                                <div id="minor-info-area">
+                                    <b><span ng-show="searchCtrl.title" id="rated">{{searchCtrl.rated}}</span></b>
+                                    <i><span>{{searchCtrl.runtime}}</span></i>
+                                    <span class="text-uppercase">{{searchCtrl.genre}}</span>
+                                </div>
+
+                                <p id="plot" class="lead">{{searchCtrl.plot}}</p>
+
+                                <div id="poster-area"><!--ng-src="{{searchCtrl.poster}}"-->
+                                    <img id="poster" ng-hide="searchCtrl.noPosterFound" />
+                                    <div ng-show="searchCtrl.noPosterFound">No Poster Found. Use your imagination.</div>
+                                </div>
+
+                                <div ng-show="searchCtrl.title" id="info-area">
+                                    <!--<div>{{searchCtrl.released}}</div> >>> Who really looks at the exact date?--> 
+                                    <b>Director: </b><span id="director" ng-show="searchCtrl.resultFound" >{{searchCtrl.director}}</span><br>
+                                    <b>Writers: </b><span id="writer" ng-show="searchCtrl.resultFound" >{{searchCtrl.writer}}</span><br>
+                                    <b>Stars: </b><span id="actors" ng-show="searchCtrl.resultFound" >{{searchCtrl.actors}}</span>
+
+                                    <br>  
+
+                                    <div id="critics-area">
+                                        <div id="mc-area">
+                                            <img src="mc-icon.png" id="metacritic-icon" ng-show="searchCtrl.metascore" />
+                                            <div ng-show="searchCtrl.metascore" id="metascore" >{{searchCtrl.metascore}}</div>
+                                        </div>
+
+                                        <div id="imdb-area">
+                                            <img src="imdb-icon.png" id="imdb-icon" ng-show="searchCtrl.imdbrating" />
+                                            <img src="star.png" ng-show="searchCtrl.imdbrating" id="star-icon"/>
+                                            <div id="imdbrating" ng-show="searchCtrl.imdbrating" id="imdbrating">{{searchCtrl.imdbrating}}</div>
+                                        </div>
+
+                                        <div id="oscar-area">
+                                            <img id="oscar-icon" ng-show="searchCtrl.wonOscar" src="oscar.png" />
+                                            <div id="awards" ng-bind-html="searchCtrl.awards">{{searchCtrl.awards}}</div>    
+                                        </div>
+
+                                    </div>
+
+                                    <div ng-show="searchCtrl.title" id="myrating-area">
+                                        <!--<div>Awards: {{searchCtrl.myawards}}</div>
+                                        <div>Crtics: {{searchCtrl.mycrtics}}</div>-->
+                                        <div id="evtitle">E+V SCORE</div>
+                                        <div class="odometer" id="myrating">{{searchCtrl.myrating}}</div>
+                                        <div id="evexplain">{{searchCtrl.evexplain}}</div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+					<div class="dummy-column">
+						<h2>Actors & Actresses</h2>
+						<a class="dummy-media-object" href="http://twitter.com/SaraSoueidan">
+							<img class="round" src="http://0.gravatar.com/avatar/81b58502541f9445253f30497e53c280?s=50&d=identicon&r=G" alt="Sara Soueidan"/>
+							<h3>Bennedict Cumberbatch</h3>
+						</a>
+						<a class="dummy-media-object" href="http://twitter.com/rachsmithtweets">
+							<img class="round" src="http://0.gravatar.com/avatar/48959f453dffdb6236f4b33eb8e9f4b7?s=50&d=identicon&r=G" alt="Rachel Smith"/>
+							<h3>Anne Hathaway</h3>
+						</a>
+						<a class="dummy-media-object" href="http://www.twitter.com/peterfinlan">
+							<img class="round" src="http://0.gravatar.com/avatar/06458359cb9e370d7c15bf6329e5facb?s=50&d=identicon&r=G" alt="Peter Finlan"/>
+							<h3>Matthew McConaughey</h3>
+						</a>
+						<a class="dummy-media-object" href="http://www.twitter.com/pcridesagain">
+							<img class="round" src="http://1.gravatar.com/avatar/db7700c89ae12f7d98827642b30c879f?s=50&d=identicon&r=G" alt="Patrick Cox"/>
+							<h3>Jennifer Lawrence</h3>
+						</a>
+						<a class="dummy-media-object" href="https://twitter.com/twholman">
+							<img class="round" src="http://0.gravatar.com/avatar/cb947f0ebdde8d0f973741b366a51ed6?s=50&d=identicon&r=G" alt="Tim Holman"/>
+							<h3>Chris Evans</h3>
+						</a>
+						<a class="dummy-media-object" href="https://twitter.com/shaund0na">
+							<img class="round" src="http://1.gravatar.com/avatar/9bc7250110c667cd35c0826059b81b75?s=50&d=identicon&r=G" alt="Shaun Dona"/>
+							<h3>Natalie Portman</h3>
+						</a>
+					</div>
+					<div class="dummy-column">
+						<h2>Popular</h2>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/08/05/page-preloading-effect/">
+							<img src="img/thumbs/PagePreloadingEffect.png" alt="PagePreloadingEffect"/>
+							<h3>Page Preloading Effect</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/05/28/arrow-navigation-styles/">
+							<img src="img/thumbs/ArrowNavigationStyles.png" alt="ArrowNavigationStyles"/>
+							<h3>Arrow Navigation Styles</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/06/19/ideas-for-subtle-hover-effects/">
+							<img src="img/thumbs/HoverEffectsIdeasNew.png" alt="HoverEffectsIdeasNew"/>
+							<h3>Ideas for Subtle Hover Effects</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/07/14/freebie-halcyon-days-one-page-website-template/">
+							<img src="img/thumbs/FreebieHalcyonDays.png" alt="FreebieHalcyonDays"/>
+							<h3>Halcyon Days Template</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/05/22/inspiration-for-article-intro-effects/">
+							<img src="img/thumbs/ArticleIntroEffects.png" alt="ArticleIntroEffects"/>
+							<h3>Inspiration for Article Intro Effects</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/06/26/draggable-dual-view-slideshow/">
+							<img src="img/thumbs/DraggableDualViewSlideshow.png" alt="DraggableDualViewSlideshow"/>
+							<h3>Draggable Dual-View Slideshow</h3>
+						</a>
+					</div>
+					<div class="dummy-column">
+						<h2>Recent</h2>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/10/07/tooltip-styles-inspiration/">
+							<img src="img/thumbs/TooltipStylesInspiration.png" alt="TooltipStylesInspiration"/>
+							<h3>Tooltip Styles Inspiration</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/09/23/animated-background-headers/">
+							<img src="img/thumbs/AnimatedHeaderBackgrounds.png" alt="AnimatedHeaderBackgrounds"/>
+							<h3>Animated Background Headers</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/09/16/off-canvas-menu-effects/">
+							<img src="img/thumbs/OffCanvas.png" alt="OffCanvas"/>
+							<h3>Off-Canvas Menu Effects</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/09/02/tab-styles-inspiration/">
+							<img src="img/thumbs/TabStyles.png" alt="TabStyles"/>
+							<h3>Tab Styles Inspiration</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/08/19/making-svgs-responsive-with-css/">
+							<img src="img/thumbs/ResponsiveSVGs.png" alt="ResponsiveSVGs"/>
+							<h3>Make SVGs Responsive with CSS</h3>
+						</a>
+						<a class="dummy-media-object" href="http://tympanus.net/codrops/2014/07/23/notification-styles-inspiration/">
+							<img src="img/thumbs/NotificationStyles.png" alt="NotificationStyles"/>
+							<h3>Notification Styles Inspiration</h3>
+						</a>
+					</div>-->
+				</div><!-- /morphsearch-content -->
+                    
+				<span class="morphsearch-close"></span>
+			</div><!-- /morphsearch -->
+			<header class="codrops-header">
+				<h1>Sleek Movie Search <span>A really nice looking search engine for movies, lovingly built with AngularJS.</span></h1>
+                <!--
+				<div class="codrops-links">
+					<a class="codrops-icon codrops-icon-prev" href="http://tympanus.net/Development/WobblySlideshowEffect/"><span>Previous Demo</span></a>
+					<a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=21106"><span>Back to the Codrops Article</span></a>
+				</div>
+                -->
+			</header>
+			<div class="overlay"></div>
+		</div><!-- /container -->
+        <div id="footer">
+            <p>Sleek Movie Search © 2015 - Developed by <a href="https://peterkim95.github.io">Peter Kim</a></p>
+        </div>
+		<script src="js/classie.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+        <script src="angular-sanitize.js"></script>
+        <script src="odometer.min.js"></script>
+        <script src="app.js"></script>
+		
+	</body>
+    
+    
+</html>
